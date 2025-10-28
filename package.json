@@ -1,0 +1,16 @@
+{
+  "name": "celo-tourism-booking",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Reliable tourism bookings in rural Uganda powered by Celo blockchain",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "vite": "^7.1.7"
+  }
+}
