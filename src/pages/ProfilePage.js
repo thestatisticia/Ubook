@@ -15,7 +15,7 @@ export class ProfilePage {
         <div class="profile-page">
           <div class="auth-required">
             <h2>Connect Your Wallet</h2>
-            <p>Please connect your Celo wallet to view your profile</p>
+            <p>Please connect your wallet to view your profile</p>
             <button class="btn-primary" id="connect-for-profile">Connect Wallet</button>
           </div>
         </div>
@@ -60,7 +60,7 @@ export class ProfilePage {
           <div>
             <h3>${booking.accommodationName}</h3>
             <p>📍 ${booking.accommodationLocation}</p>
-            <p>${booking.nights} night(s) • Total ${booking.totalAmount} CELO</p>
+            <p>${booking.nights} night(s) • Total ${booking.totalAmount} ckUSDC</p>
           </div>
         </div>
         <div class="row-right">

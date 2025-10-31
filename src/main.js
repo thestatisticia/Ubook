@@ -8,6 +8,7 @@ import { AccommodationDetailsPage } from './pages/AccommodationDetailsPage.js';
 import { DashboardPage } from './pages/DashboardPage.js';
 import { ChatPage } from './pages/ChatPage.js';
 import { ProfilePage } from './pages/ProfilePage.js';
+import { AdminPage } from './pages/AdminPage.js';
 import { connectWallet, getBalance } from './utils/wallet.js';
 import { storeWalletConnection, getWalletConnection, storeUserData, getUserData } from './utils/storage.js';
 
@@ -137,6 +138,10 @@ class App {
 
       case 'profile':
         pageInstance = new ProfilePage(this.currentUser, this.walletConnection);
+        break;
+      
+      case 'admin':
+        pageInstance = new AdminPage(this.currentUser, this.walletConnection);
         break;
       
       default:

@@ -1,5 +1,6 @@
 // Browse Page Component
 import { SAMPLE_ACCOMMODATIONS } from '../config/constants.js';
+import { getAllAccommodations } from '../utils/storage.js';
 import { AccommodationCard } from '../components/AccommodationCard.js';
 
 export class BrowsePage {
@@ -41,7 +42,7 @@ export class BrowsePage {
         </div>
 
         <div class="accommodations-grid" id="accommodations-list">
-          ${SAMPLE_ACCOMMODATIONS.map(acc => {
+          ${(getAllAccommodations().length ? getAllAccommodations() : SAMPLE_ACCOMMODATIONS).map(acc => {
             const card = new AccommodationCard(acc);
             return card.render();
           }).join('')}

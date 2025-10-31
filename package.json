@@ -7,10 +7,21 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "compile": "hardhat compile",
+    "deploy:alfajores": "hardhat run scripts/deploy.js --network alfajores",
+    "deploy:viem": "node scripts/deploy-viem.js",
+    "check:env": "hardhat run scripts/check-env.js",
+    "interact": "node scripts/interact.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "viem": "^2.19.6"
+  },
   "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "^5.0.2",
+    "hardhat": "^2.22.10",
     "vite": "^7.1.7"
   }
 }

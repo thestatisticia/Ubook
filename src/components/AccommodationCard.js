@@ -31,7 +31,7 @@ export class AccommodationCard {
           </div>
           <div class="card-footer">
             <div class="price-info">
-              <span class="price">${pricePerNight} CELO</span>
+              <span class="price">${pricePerNight} ckUSDC</span>
               <span class="price-label">per night</span>
             </div>
             ${available ? `

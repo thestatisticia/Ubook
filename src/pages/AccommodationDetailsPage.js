@@ -1,5 +1,6 @@
 // Accommodation Details Page Component
 import { SAMPLE_ACCOMMODATIONS } from '../config/constants.js';
+import { getAllAccommodations } from '../utils/storage.js';
 import { connectWallet } from '../utils/wallet.js';
 import { getBalance } from '../utils/wallet.js';
 import { storeBooking, getUserData } from '../utils/storage.js';
@@ -12,7 +13,8 @@ export class AccommodationDetailsPage {
   }
 
   render(id) {
-    const accommodation = SAMPLE_ACCOMMODATIONS.find(acc => acc.id === parseInt(id));
+    const dataset = getAllAccommodations().length ? getAllAccommodations() : SAMPLE_ACCOMMODATIONS;
+    const accommodation = dataset.find(acc => acc.id === parseInt(id));
     
     if (!accommodation) {
       return '<div class="error-page"><h2>Accommodation not found</h2><a href="#/browse">Back to Browse</a></div>';
@@ -54,10 +56,10 @@ export class AccommodationDetailsPage {
             <div class="booking-panel">
               <div class="price-box">
                 <div class="price-main">
-                  <span class="currency">${pricePerNight} CELO</span>
+                  <span class="currency">${pricePerNight} ckUSDC</span>
                   <span class="price-label">per night</span>
                 </div>
-                <p class="price-note">All payments secured by smart contract escrow</p>
+                <p class="price-note">Secure payments through Plug wallet</p>
               </div>
 
               ${!this.walletConnection?.connected ? `
@@ -93,11 +95,15 @@ export class AccommodationDetailsPage {
                     </div>
                     <div class="summary-row">
                       <span>Price per night:</span>
-                      <span>${pricePerNight} CELO</span>
+                      <span>${pricePerNight} ckUSDC</span>
                     </div>
                     <div class="summary-row summary-total">
                       <span>Total Amount:</span>
-                      <span id="total-amount">0 CELO</span>
+                      <span id="total-amount">0 ckUSDC</span>
+                    </div>
+                    <div class="summary-row">
+                      <span>Status:</span>
+                      <span id="escrow-status">Paid — Held in Escrow (demo)</span>
                     </div>
                     <div class="summary-row">
                       <span>Deposit Amount:</span>
@@ -111,7 +117,7 @@ export class AccommodationDetailsPage {
                   </div>
 
                   <button class="btn-primary btn-large" id="deposit-button" disabled>
-                    Deposit CELO & Create Booking
+                    Deposit ckUSDC & Create Booking
                   </button>
                 </div>
               ` : `
@@ -134,10 +140,10 @@ export class AccommodationDetailsPage {
 
               <h2>Important Information</h2>
               <div class="info-box">
-                <p><strong>Payment:</strong> All payments are held in an on-chain escrow smart contract until you complete your stay.</p>
-                <p><strong>Booking Process:</strong> After you deposit CELO, we will book the accommodation on your behalf and guide you through the process.</p>
+                <p><strong>Payment:</strong> All payments are processed securely through the Internet Computer Protocol using ckUSDC.</p>
+                <p><strong>Booking Process:</strong> After you deposit ckUSDC, we will book the accommodation on your behalf and guide you through the process.</p>
                 <p><strong>Arrival:</strong> Our team will help you settle in when you arrive in Uganda.</p>
-                <p><strong>Network:</strong> Currently using Celo Alfajores testnet for testing.</p>
+                <p><strong>Network:</strong> Built on Internet Computer Protocol using Plug wallet integration.</p>
               </div>
             </div>
           </div>
@@ -167,7 +173,8 @@ export class AccommodationDetailsPage {
     const depositButton = document.getElementById('deposit-button');
 
     const recalcAndValidate = () => {
-      const accommodation = SAMPLE_ACCOMMODATIONS.find(a => a.id === parseInt(id));
+      const dataset = getAllAccommodations().length ? getAllAccommodations() : SAMPLE_ACCOMMODATIONS;
+      const accommodation = dataset.find(a => a.id === parseInt(id));
       if (!accommodation) return;
       const checkin = (ciYear?.value && ciMonth?.value !== '' && ciDay?.value)
         ? new Date(parseInt(ciYear.value, 10), parseInt(ciMonth.value, 10), parseInt(ciDay.value, 10))
@@ -195,7 +202,7 @@ export class AccommodationDetailsPage {
 
       if (nights > 0) {
         document.getElementById('nights-count').textContent = nights;
-        document.getElementById('total-amount').textContent = `${total} CELO`;
+        document.getElementById('total-amount').textContent = `${total} ckUSDC`;
         document.getElementById('booking-summary').style.display = 'block';
       }
 
@@ -217,7 +224,7 @@ export class AccommodationDetailsPage {
       const balance = await getBalance(this.walletConnection.address);
       const balanceElement = document.getElementById('wallet-balance');
       if (balanceElement) {
-        balanceElement.innerHTML = `<span>Your Balance: <strong>${balance.toFixed(2)} CELO</strong></span>`;
+        balanceElement.innerHTML = `<span>Your Balance: <strong>${balance.toFixed(2)} ckUSDC</strong></span>`;
       }
     };
 
@@ -234,7 +241,8 @@ export class AccommodationDetailsPage {
           : null;
         const depositVal = parseFloat(depositAmountInput?.value || '0');
 
-        const accommodation = SAMPLE_ACCOMMODATIONS.find(a => a.id === parseInt(id));
+        const dataset = getAllAccommodations().length ? getAllAccommodations() : SAMPLE_ACCOMMODATIONS;
+        const accommodation = dataset.find(a => a.id === parseInt(id));
         let nights = 0;
         if (checkin && checkout && checkout > checkin) {
           nights = Math.ceil((checkout - checkin) / (1000 * 60 * 60 * 24));
@@ -274,7 +282,7 @@ export class AccommodationDetailsPage {
         storeBooking(booking);
 
         // Show success message
-        alert(`Booking created! Booking ID: ${booking.id}\n\nDeposit ${total} CELO to complete your booking.\n\nNote: In production, this would trigger a blockchain transaction.`);
+        alert(`Booking created! Booking ID: ${booking.id}\n\nDeposit ${total} ckUSDC to complete your booking.`);
 
         // Navigate to dashboard
         window.location.hash = '#/dashboard';

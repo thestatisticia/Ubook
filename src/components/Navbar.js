@@ -28,6 +28,7 @@ export class Navbar {
             <a href="#/chat" class="nav-link">Chat</a>
             ${isLoggedIn ? `
               <a href="#/dashboard" class="nav-link">My Bookings</a>
+              <a href="#/admin" class="nav-link" id="admin-link" style="display:none;">Admin</a>
               <a href="#/profile" class="nav-link">Profile</a>
               <div class="nav-user">
                 <span class="user-address" id="wallet-address">${displayAddress}</span>
@@ -58,6 +59,15 @@ export class Navbar {
         document.dispatchEvent(event);
       });
     }
+
+    // Reveal admin link if whitelisted
+    try {
+      const wallet = JSON.parse(localStorage.getItem('walletConnection') || 'null');
+      const addr = wallet?.address?.toLowerCase();
+      const admin = '0xc00ae523874cdb65ed161771f28d8ec164cfb15f';
+      const link = document.getElementById('admin-link');
+      if (addr && addr === admin && link) link.style.display = 'inline-block';
+    } catch {}
   }
 }
 

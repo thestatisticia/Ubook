@@ -1,3 +1,25 @@
+## Deploy (Celo Alfajores)
+
+1. Create `.env` with:
+
+```
+DEPLOYER_PK=0xf91e12f68c02938dc8eb49aacf971a1a2b9847801e98e7f541c7ff212be1e761
+```
+
+2. Install deps and compile:
+
+```
+npm install
+npm run compile
+```
+
+3. Deploy:
+
+```
+npm run deploy:alfajores
+```
+
+Artifacts for app integration will be written to `src/config/ubook-address.json` and `src/config/ubook-abi.json`.
 # 🌍 Uganda Tourism Booking Platform
 
 A blockchain-powered booking platform for rural tourism in Uganda, powered by Celo.

@@ -15,7 +15,7 @@ export class DashboardPage {
         <div class="dashboard-page">
           <div class="auth-required">
             <h2>Connect Your Wallet</h2>
-            <p>Please connect your Celo wallet to view your bookings</p>
+            <p>Please connect your wallet to view your bookings</p>
             <button class="btn-primary" id="connect-for-dashboard">Connect Wallet</button>
           </div>
         </div>
@@ -127,17 +127,19 @@ export class DashboardPage {
           </div>
           <div class="booking-payment">
             <div class="price-detail">
-              <span>${booking.pricePerNight} CELO × ${booking.nights} nights</span>
-              <span class="total-price">${booking.totalAmount} CELO</span>
+              <span>${booking.pricePerNight} ckUSDC × ${booking.nights} nights</span>
+              <span class="total-price">${booking.totalAmount} ckUSDC</span>
             </div>
             ${booking.status === BOOKING_STATUS.PENDING ? `
               <button class="btn-primary btn-small" onclick="window.location.hash='#/accommodation/${booking.accommodationId}'">
                 Complete Deposit
               </button>
             ` : ''}
-            ${[BOOKING_STATUS.PENDING, BOOKING_STATUS.CONFIRMED, BOOKING_STATUS.DEPOSITED].includes(booking.status) ? `
-              <button class="btn-secondary btn-small cancel-booking" data-id="${booking.id}">Cancel</button>
-            ` : ''}
+            ${(() => {
+              const now = Date.now();
+              const canCancel = new Date(booking.checkIn).getTime() > now && [BOOKING_STATUS.PENDING, BOOKING_STATUS.CONFIRMED, BOOKING_STATUS.DEPOSITED].includes(booking.status);
+              return canCancel ? `<button class=\"btn-secondary btn-small cancel-booking\" data-id=\"${booking.id}\" title=\"5% fee applies\">Cancel (5% fee)</button>` : '';
+            })()}
           </div>
         </div>
       </div>
@@ -173,7 +175,7 @@ export class DashboardPage {
     document.querySelectorAll('.cancel-booking').forEach(btn => {
       btn.addEventListener('click', async () => {
         const id = parseInt(btn.getAttribute('data-id'), 10);
-        if (!confirm('Cancel this booking?')) return;
+        if (!confirm('Cancel this booking? A 5% fee will be deducted.')) return;
         const { updateBookingStatus } = await import('../utils/storage.js');
         const { BOOKING_STATUS } = await import('../config/constants.js');
         updateBookingStatus(id, BOOKING_STATUS.CANCELLED);

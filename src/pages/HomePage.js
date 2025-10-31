@@ -10,7 +10,9 @@ export class HomePage {
 
   async render() {
     // Get featured accommodations (first 3)
-    const featuredAccommodations = SAMPLE_ACCOMMODATIONS.slice(0, 3);
+    const { getAllAccommodations } = await import('../utils/storage.js');
+    const dataset = getAllAccommodations().length ? getAllAccommodations() : SAMPLE_ACCOMMODATIONS;
+    const featuredAccommodations = dataset.slice(0, 3);
 
     return `
       <div class="home-page">
@@ -22,7 +24,7 @@ export class HomePage {
             <div class="hero-buttons">
               <a href="#/browse" class="btn-primary">Browse stays</a>
               ${!this.walletConnection?.connected ? `
-                <button class="btn-secondary" id="connect-wallet-hero">Connect MetaMask</button>
+                <button class="btn-secondary" id="connect-wallet-hero">Connect Wallet</button>
               ` : `
                 <a href="#/dashboard" class="btn-secondary">My bookings</a>
               `}
@@ -79,10 +81,10 @@ export class HomePage {
             <h2 class="section-title">HOW IT WORKS</h2>
             <div class="feature-list">
               <div class="feature-item">
-                <div class="icon-circle">🦊</div>
+                <div class="icon-circle">🔌</div>
                 <div class="item-text">
-                  <h3>CONNECT METAMASK</h3>
-                  <p>Connect your wallet to view balance and book securely.</p>
+                  <h3>CONNECT WALLET</h3>
+                  <p>Connect your Plug wallet to view balance and book securely.</p>
                 </div>
               </div>
               <div class="feature-item">

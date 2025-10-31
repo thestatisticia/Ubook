@@ -135,4 +135,42 @@ export function getWalletConnection() {
 }
 
 
+// Accommodations (admin-managed) CRUD
+const ACC_KEY = 'accommodations';
+
+export function getAllAccommodations() {
+  try {
+    const raw = localStorage.getItem(ACC_KEY);
+    return raw ? JSON.parse(raw) : [];
+  } catch (e) {
+    console.error('Error reading accommodations:', e);
+    return [];
+  }
+}
+
+export function saveAllAccommodations(list) {
+  try {
+    localStorage.setItem(ACC_KEY, JSON.stringify(list));
+  } catch (e) {
+    console.error('Error saving accommodations:', e);
+  }
+}
+
+export function upsertAccommodation(acc) {
+  const list = getAllAccommodations();
+  const idx = list.findIndex(a => a.id === acc.id);
+  if (idx >= 0) {
+    list[idx] = acc;
+  } else {
+    list.push(acc);
+  }
+  saveAllAccommodations(list);
+}
+
+export function removeAccommodation(id) {
+  const list = getAllAccommodations().filter(a => a.id !== id);
+  saveAllAccommodations(list);
+}
+
+
 
